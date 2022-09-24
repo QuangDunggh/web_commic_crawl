@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>Hello thyemleaf</h1>
+</body>
+</html>
+
+<script>
+	function callApi() {
+		fetch("http://localhost:8089/api/callHtml/showDocucment")
+		.then((response) => response.json())
+		.then((data) => console.log(data))
+	}
+	
+	callApi();
+
+</script>
