@@ -5,10 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-@SpringBootApplication(scanBasePackages = "com.readComics")
-@EnableScheduling
-@ComponentScan(basePackages = "com.readComics")
-
+@SpringBootApplication
+@ComponentScan("{com.readComics.bpo}")
 public class BpoApplication {
 
 	public static void main(String[] args) {

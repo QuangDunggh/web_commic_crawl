@@ -59,7 +59,7 @@ public class CrawlServiceImpl implements ICrawService {
 	public List<Category> getAllCategory(String url) {
 		List<Category> categoryList = new ArrayList();
 		try {
-			Document document = Jsoup.connect("https://dtruyen.com/truyen-dich/").get();
+			Document document = Jsoup.connect(url).get();
 			
 			Element element = document.getElementsByClass("categories clearfix").first();
 			
