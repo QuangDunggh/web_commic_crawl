@@ -14,6 +14,14 @@ public interface ICrawService {
 	
 	Optional<Product> getProductFromWeb(String url);
 	
+	void getNameComic(String url);
+	
+	void getAuthorComic(String url);
+	
+	void getImgComic(String url);
+	
+	void getCateogryOfComic(String url);
+	
 	List<Category> getAllCategory(String url);
 	
 	Optional<Category> getCategoryFromWeb(String url);

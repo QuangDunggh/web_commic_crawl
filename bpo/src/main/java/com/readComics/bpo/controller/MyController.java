@@ -13,38 +13,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.readComics.bpo.model.dto.ResponseDTO;
-import com.readComics.bpo.service.IScraperService;
-
 @RestController
-@RequestMapping("/")
+@RequestMapping("/helloSpring/")
 public class MyController {
-	
-	@Autowired
-	IScraperService scraperService;
-	
+
 	@GetMapping("/")
-	public String myHello() {
-		return "hello my spring";
-	}
-	
-	@GetMapping("api/call/{pram}")
-	public ResponseEntity<?> getVehicleByModel(@PathVariable("pram") String pram) {
-		Set<ResponseDTO> response = scraperService.getVehicleByModel(pram);
-		return new ResponseEntity<>(response, HttpStatus.OK);
+	public ModelAndView myHello() {
+		return new ModelAndView("/index");
 	}
 
-	@GetMapping("/showThyemleaf")
-	public ModelAndView showThymleaf() {
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("views/thyemleafEclipse");
-		return modelAndView;
-	}
-	
-	@GetMapping("api/callHtml/showDocucment")
-	public ResponseEntity<?> innerHtml() {
-		String html = scraperService.parseDocumentToHtml("ok");
-		
-		return new ResponseEntity<> (html, HttpStatus.OK);
-	}
 }

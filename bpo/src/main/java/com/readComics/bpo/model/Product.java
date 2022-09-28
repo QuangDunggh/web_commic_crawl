@@ -32,6 +32,10 @@ public class Product {
 	
 	private String category;
 	
+	private String img;
+	
+	private int numberOfChapter;
+	
 	@ManyToOne
 	@JoinColumn(name = "author_id", nullable = false)
 	private AuthorComic author;
@@ -82,6 +86,22 @@ public class Product {
 
 	public void setAuthor(AuthorComic author) {
 		this.author = author;
+	}
+	
+	public void setImg(String img) {
+		this.img = img;
+	}
+	
+	public String getImg() {
+		return this.img;
+	}
+	
+	public void setNumberOfChapter(int numberOfChapter) {
+		this.numberOfChapter = numberOfChapter;
+	}
+	
+	public int getNumberOfChapter() {
+		return this.numberOfChapter;
 	}
 	
 	

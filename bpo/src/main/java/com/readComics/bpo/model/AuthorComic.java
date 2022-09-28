@@ -10,9 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
+
 @Entity
 @Table(name = "authories")
 public class AuthorComic {
@@ -22,5 +20,26 @@ public class AuthorComic {
 	private Long id;
 	
 	private String nameAuthor;
+	
+	public AuthorComic() {
+		
+	}
+	
+	public AuthorComic(Long id, String nameAuthor) {
+		this.id = id;
+		this.nameAuthor = nameAuthor;
+	}
+	
+	public Long getId() {
+		return this.id;
+	}
+	
+	public void setNameAuthor(String authorName) {
+		this.nameAuthor = authorName;
+	}
+	
+	public String getNameAuthor() {
+		return this.nameAuthor;
+	}
 
 }

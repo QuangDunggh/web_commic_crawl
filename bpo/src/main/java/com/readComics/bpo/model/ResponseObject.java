@@ -1,33 +1,29 @@
-package com.readComics.bpo.model.responseDTO;
+package com.readComics.bpo.model;
 
 public class ResponseObject {
-	
-	private String error;
-	
+
+	private String code;
+
 	private String message;
-	
+
 	private Object data;
-	
+
 	public ResponseObject() {
-		
+
 	}
-	
-	public ResponseObject(String error, String message, Object data) {
-		
-		this.error = error;
-		
+
+	public ResponseObject(String code, String message, Object data) {
+		this.code = code;
 		this.message = message;
-		
 		this.data = data;
-		
 	}
 
-	public String getError() {
-		return error;
+	public String getCode() {
+		return code;
 	}
 
-	public void setError(String error) {
-		this.error = error;
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 	public String getMessage() {
@@ -48,7 +44,7 @@ public class ResponseObject {
 
 	@Override
 	public String toString() {
-		return "ResponseDTO [error=" + error + ", message=" + message + ", data=" + data + "]";
+		return "ResponseObject [code=" + code + ", message=" + message + ", data=" + data + "]";
 	}
 	
 	

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.readComics.bpo.model.Category;
-import com.readComics.bpo.model.responseDTO.ResponseObject;
+import com.readComics.bpo.model.ResponseObject;
 import com.readComics.bpo.service.category.ICategoryService;
 import com.readComics.bpo.service.crawlWeb.ICrawService;
 
@@ -33,20 +33,16 @@ public class RestCategoryController {
 
 		if (listCategory.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-
 					new ResponseObject("Loi khong co du lieu", "Không có loại nào trong database", "")
-
 			);
 		}
 
 		return ResponseEntity.status(HttpStatus.OK).body(
-
 				new ResponseObject("OK", "Thành công", listCategory)
-
 		);
 	}
 
-	@PostMapping("/saveFromWeb")
+	@GetMapping("/saveCategoryFromWeb")
 	public ResponseEntity<ResponseObject> saveCategoryFromWeb() {
 
 		try {
