@@ -1,6 +1,7 @@
 package com.readComics.bpo.service.crawlWeb;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import com.readComics.bpo.model.AuthorComic;
@@ -14,11 +15,11 @@ public interface ICrawService {
 	
 	Optional<Product> getProductFromWeb(String url);
 	
-	void getNameComic(String url);
+	Map<String,String> getInforComic(String url);
 	
-	void getAuthorComic(String url);
+	List<Product> getDetailComic();
 	
-	void getImgComic(String url);
+	List<Chapter> getDetailChapter();
 	
 	void getCateogryOfComic(String url);
 	

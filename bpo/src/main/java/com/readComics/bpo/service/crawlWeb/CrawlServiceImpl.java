@@ -2,7 +2,9 @@ package com.readComics.bpo.service.crawlWeb;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.jsoup.Jsoup;
@@ -18,6 +20,7 @@ import com.readComics.bpo.model.Category;
 import com.readComics.bpo.model.Chapter;
 import com.readComics.bpo.model.Product;
 import com.readComics.bpo.repositories.authorRepository.IAuthorRepository;
+import com.readComics.bpo.repositories.categoryRepository.ICategoryRepository;
 import com.readComics.bpo.repositories.productRepository.IProductRepository;
 import com.readComics.bpo.utils.FileService;
 
@@ -26,13 +29,16 @@ import com.readComics.bpo.utils.FileService;
 public class CrawlServiceImpl implements ICrawService {
 
 	@Autowired
-	FileService fileService;
-	
+	private FileService fileService;
+
 	@Autowired
-	IProductRepository productRepository;
-	
+	private IProductRepository productRepository;
+
 	@Autowired
-	IAuthorRepository authorRepository;
+	private IAuthorRepository authorRepository;
+
+	@Autowired
+	private ICategoryRepository categoryRepository;
 
 	public void getConnectWithWeb() {
 
@@ -82,8 +88,6 @@ public class CrawlServiceImpl implements ICrawService {
 				categoryList.add(category);
 			}
 
-			
-
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -111,53 +115,52 @@ public class CrawlServiceImpl implements ICrawService {
 	}
 
 	@Override
-	public void getNameComic(String url) {
+	public Map<String, String> getInforComic(String url) {
+		Map<String, String> comicsMap = new HashMap<>();
+
 		try {
-			List<String> urlComic = new ArrayList();
-			
 			Document document = Jsoup.connect(url).get();
-			
+
 			Element element = document.getElementsByClass("list-stories").first();
-			
+
 			Elements elements = element.getElementsByTag("li");
-			
-			for(Element e : elements ) {
+
+			for (Element e : elements) {
 				Product product = new Product();
-				
+
 				AuthorComic author = new AuthorComic();
-				
+
 				Element tagAComic = e.getElementsByTag("a").first();
-				
+
 				Element tagPComic = e.getElementsByTag("p").first();
-				
+
 				product.setNameProduct(tagAComic.attr("title"));
-				
+
+				product.setUrlComic(tagAComic.attr("href"));
+
 				author.setNameAuthor(tagPComic.text());
-				
-				urlComic.add(tagAComic.attr("href"));
-				
-				authorRepository.save(author);
-				
-				product.setAuthor(author);
-				
-				productRepository.save(product);
-				
+
+				if (!authorRepository.existsAuthorComicByNameAuthor(author.getNameAuthor())) {
+
+					authorRepository.save(author);
+				}
+
+				if (!productRepository.existsProductByNameProduct(product.getNameProduct())) {
+
+					product.setAuthor(author);
+
+					productRepository.save(product);
+				}
+
+				comicsMap.put(product.getNameProduct(), author.getNameAuthor());
+
 			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-	}
-
-	@Override
-	public void getAuthorComic(String url) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void getImgComic(String url) {
-		// TODO Auto-generated method stub
+		return comicsMap;
 
 	}
 
@@ -165,6 +168,76 @@ public class CrawlServiceImpl implements ICrawService {
 	public void getCateogryOfComic(String url) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public List<Product> getDetailComic() {
+
+		List<Product> listProduct = productRepository.findAll();
+
+		try {
+			for (Product p : listProduct) {
+
+				Document document = Jsoup.connect(p.getUrlComic()).get();
+
+				Element element = document.getElementById("story-detail");
+
+				Element imgComic = element.getElementsByTag("img").first();
+
+				p.setImg(imgComic.attr("href"));
+
+				Element categoryComicList = element.getElementsByClass("story_categories").first();
+
+				Elements categoryComic = categoryComicList.getElementsByTag("a");
+
+				String categoryStr = "";
+
+				for (Element e : categoryComic) {
+					if (!e.equals(categoryComic.last())) {
+
+						if (categoryRepository.existsCategoryByNameCategory(e.attr("title"))) {
+
+							categoryStr += e.attr("title") + "-";
+						}
+					} else {
+						if (categoryRepository.existsCategoryByNameCategory(e.attr("title"))) {
+
+							categoryStr += e.attr("title");
+						}
+					}
+
+				}
+				
+				p.setCategory(categoryStr);
+				
+				Element elementDescription = element.getElementsByClass("description").first();
+				
+				System.out.println(elementDescription.text());
+				
+				p.setDescription(elementDescription.text());
+				
+				Element divInforComic = element.getElementsByClass("infos").first();
+				
+				Element viewComicElement = divInforComic.getElementsByTag("p").get(3);
+				
+//				p.setView(Integer.parseInt(viewComicElement.text()));
+				
+				System.out.println("view comic: " + viewComicElement.text());
+				
+				Thread.sleep(1500);
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return listProduct;
+	}
+
+	@Override
+	public List<Chapter> getDetailChapter() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

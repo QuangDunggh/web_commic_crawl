@@ -7,5 +7,7 @@ import com.readComics.bpo.model.AuthorComic;
 
 @Repository
 public interface IAuthorRepository extends JpaRepository<AuthorComic, Long> {
+	
+	boolean existsAuthorComicByNameAuthor(String nameAuthor);
 
 }

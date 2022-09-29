@@ -7,5 +7,8 @@ import com.readComics.bpo.model.Product;
 @Repository
 public interface IProductRepository extends JpaRepository<Product, Long>{
 	
+	boolean existsProductByNameProduct(String nameProduct);
+	
+	
 
 }
